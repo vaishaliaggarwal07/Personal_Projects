@@ -1,0 +1,4640 @@
+#TO BE UPDATED API
+#create movie api added 3 new fields 23-aug-2023
+openapi: 3.0.3
+info:
+  title: Dhaakad API
+  description: Dhaakad API documentation (Might be buggy)
+  version: 0.0.5
+  contact:
+    email: vishal.rustagi@metaorangedigital.com
+servers:
+  - url: 'https://api.dhaakadcinema.com/api/v1'
+tags:
+  - name: movies
+    description: Movie API
+  - name: users
+    description: Users API
+  - name: reviews
+    description: review API
+  - name: categories
+    description: categories API
+  - name: languages
+    description: languages API
+  - name: rewards
+    description: rewards API
+  - name: casts
+    description: casts API
+  - name: usermovies
+    description: User and movie association API
+  - name: notifications
+    description: notification API - (In complete)
+  - name: transactions
+    description: Payment API - (Need to be tested)
+  - name: support
+    description: Support API
+  - name: purchase
+    description: Purchase API
+  - name: current-user-movie
+    description: Current User Movie
+
+paths:
+  /movies/top-5-cheap:
+    get:
+      tags:
+        - movies
+      summary: get top 5 movies (rough Idea from API decode)
+      operationId: top5Cheap
+      parameters:
+        - name: language
+          in: query
+          description: CSV list languages
+          required: false
+          schema:
+            type: string
+            example: 'english,hindi'
+        - name: page
+          in: query
+          description: pagination page field
+          required: false
+          schema:
+            type: number
+            example: 1
+        - name: categories
+          in: query
+          description: CSV list languages
+          required: false
+          schema:
+            type: string
+            example: 'action,drama'
+        - name: feature
+          in: query
+          description: Is the movie feature movie
+          schema:
+            type: boolean
+            example: true
+        - name: search
+          in: query
+          description: Search a movie by its title
+          schema:
+            type: string
+            example: 'Big Bunny'
+
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+                      feature:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+      #security:
+      #  - bearerAuth: []
+  /movies/top-trending:
+    get:
+      tags:
+        - movies
+      summary: get top trending (rough Idea from API decode)
+      operationId: topTrending
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+  /movies/coming-movies:
+    get:
+      tags:
+        - movies
+      summary: get coming movies (rough Idea from API decode)
+      operationId: comingMovies
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+  /movies/stream-movies:
+    get:
+      tags:
+        - movies
+      summary: get stream movies (rough Idea from API decode)
+      operationId: streamMovies
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+  /movies/recent-movies:
+    get:
+      tags:
+        - movies
+      summary: get recent movies (rough Idea from API decode)
+      operationId: recentMovies
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+  /movies/movie-stats:
+    get:
+      tags:
+        - movies
+      summary: get stats movies (rough Idea from API decode)
+      operationId: statsMovies
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+  /movies/monthly-plan/{year}:
+    get:
+      tags:
+        - movies
+      summary: get movies monthly plan by year (rough Idea from API decode)
+      operationId: monthlyPlanMovies
+      parameters:
+        - name: year
+          in: path
+          description: year of the movie
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  data:
+                    type: object
+                    properties:
+                      plan:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Movies'
+  /movies/uploadVideo:
+    post:
+      tags:
+        - movies
+      summary: upload movies (rough Idea from API decode)
+      operationId: uploadMovies
+      requestBody:
+        description: upload movie object
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                video:
+                  type: string
+                  format: binary
+                  description: file upload
+                'type':
+                  type: string
+                  example: 'video/mp4'
+      responses:
+        200:
+          description: upload to bucket in progress
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie Uploading start..."
+                  type:
+                    type: string
+                    example: 'video/mp4'
+                  data:
+                    type: object
+                    description: 'Bucket upload description'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/addSubtitleToMovie/{id}:
+    patch:
+      tags:
+        - movies
+      summary: add subtitle
+      operationId: addSubtitle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                brandTitle:
+                  type: string
+                  example: 'Dhaakad cinema orignal'
+                duration:
+                  type: string
+                  example: '01:25:40'
+                categories:
+                  type: array
+                  items:
+                    type: string
+                  example: ['Action','Drama']
+                subtitles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      'type':
+                        type: string
+                        example: 'english'
+                      url:
+                        type: string
+                        example: 'https://path to url'
+                movieSubtitles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      language:
+                        type: string
+                        example: 'English'
+                      subtitle:
+                        type: string
+                        example: 'NA'
+                subtitlesLan:
+                  type: array
+                  items:
+                    type: string
+                  example: ['NA']
+                banners:
+                  type: array
+                  items:
+                    type: string
+                languages:
+                  type: array
+                  items:
+                    type: string
+                  example: ['English','Hindi']
+                dhaakadRating:
+                  type: string
+                  example: 'Rocket'
+                ageGroup:
+                  type: array
+                  items:
+                    type: string
+                  example: ['G']
+                casts:
+                  type: array
+                  items:
+                    type: string
+                  example: ['Akshay  Kumar','Alic Peter']
+                price:
+                  type: number
+                  example: 149
+                offerPrice:
+                  type: number
+                  example: 99
+                description:
+                  type: string
+                  example: 'Sample description about movie'
+                subDescription:
+                  type: string
+                  example: 'Sub description'
+                toolTip:
+                  type: string
+                  example: 'Dhaakad rating 5'
+                isFeatured:
+                  type: boolean
+                  example: false
+                isTrend:
+                  type: boolean
+                  example: true
+                movieUrl:
+                  type: array
+                  items:
+                    type: string
+                  example: ['https://some url']
+                trailerUrl:
+                  type: array
+                  items:
+                    type: string
+                  example: ['https://trailerurl']
+                totalReviewsCount:
+                  type: number
+                  example: 23
+                releaseDate:
+                  type: string
+                  format: date-time
+                  example: '2023-07-30T16:10:10Z'
+                expireDate:
+                  type: string
+                  format: date-time
+                  example: '2023-07-30T16:10:10Z'
+                status:
+                  type: string
+                  example: 'Active'
+                castIds:
+                  type: array
+                  items:
+                    type: string
+                averageRating:
+                  type: number
+                  example: 3.9
+                streamed:
+                  type: boolean
+                  example: false
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/deleteSubtitleToMovie/{id}:
+    patch:
+      tags:
+        - movies
+      summary: delete subtitle
+      operationId: deleteSubtitle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  example: 'English'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/updateSubtitleToMovie/{id}:
+    patch:
+      tags:
+        - movies
+      summary: update subtitle
+      operationId: updateSubtitle
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  example: 'English'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/purches-movies/{userid}:
+    get:
+      tags:
+        - movies
+      summary: get user purchased movies
+      operationId: getUserPurchasedMovies
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Purchase Movies are here!"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/uploadSubtitlesS3:
+    post:
+      tags:
+        - movies
+      summary: 'Upload Subtitle'
+      operationId: 'uploadSubtitle'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: string
+                  format: binary
+                  description: file upload
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      {}
+        500:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/updateStream/{movieid}:
+    patch:
+      tags:
+        - movies
+      summary: Update Stream
+      operationId: updateStream
+      parameters:
+        - name: movieid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieTransactions'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Rent  Movies are here!"
+                  results:
+                    $ref: '#/components/schemas/MovieTransactions'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/getPreBookedMovies/{userid}:
+    get:
+      tags:
+        - movies
+      summary: Get prebooked Movies
+      operationId: getPrebookedMovies
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Prebooked Movies are here"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/getRentMovies/{userid}:
+    get:
+      tags:
+        - movies
+      summary: Get Rent Movies
+      operationId: getRentMovies
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Rent  Movies are here!"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/getpbookedMovies/{userid}:
+    get:
+      tags:
+        - movies
+      summary: Get Booked Movies
+      operationId: getBookedMovies
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Rent  Movies are here!"
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies:
+    get:
+      tags:
+        - movies
+      summary: Get all movies
+      operationId: getAllMovies
+      parameters:
+        - name: language
+          in: query
+          description: CSV list languages
+          required: false
+          schema:
+            type: string
+            example: 'english,hindi'
+        - name: page
+          in: query
+          description: pagination page field
+          required: false
+          schema:
+            type: number
+            example: 1
+        - name: limit
+          in: query
+          description: pagination page field
+          required: false
+          schema:
+            type: number
+            example: 1
+        - name: categories
+          in: query
+          description: CSV list languages
+          required: false
+          schema:
+            type: string
+            example: 'action,drama'
+        - name: feature
+          in: query
+          description: Is the movie feature movie
+          schema:
+            type: boolean
+            example: true
+        - name: search
+          in: query
+          description: Search a movie by its title
+          schema:
+            type: string
+            example: 'Big Bunny'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movies fetched successfully"
+                  results:
+                    type: string
+                    example: 10
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - movies
+      summary: Add movie
+      operationId: addMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                languages:
+                  type: array
+                  items:
+                    type: string
+                  example: ['English','Hindi']
+                categories:
+                  type: array
+                  items:
+                    type: string
+                  example: ['Action','Drama']
+                castIds:
+                  type: array
+                  items:
+                    type: string
+                casts:
+                  type: array
+                  items:
+                    type: string
+                  example: ['Akshay  Kumar','Alic Peter']
+                ageGroup:
+                  type: array
+                  items:
+                    type: string
+                    example: ['G']
+                title:
+                  type: string
+                  example: 'Big Buck Bunny'
+                brandTitle:
+                  type: string
+                  example: 'Dhaakad cinema orignal'
+                duration:
+                  type: string
+                  example: '01:25:40'
+                subtitles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      'type':
+                        type: string
+                        example: 'english'
+                      url:
+                        type: string
+                        example: 'https://path to url'
+                movieSubtitles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      language:
+                        type: string
+                        example: 'English'
+                      subtitle:
+                        type: string
+                        example: 'NA'
+                subtitlesLan:
+                  type: array
+                  items:
+                    type: string
+                  example: ['NA']
+                banners:
+                  type: array
+                  items:
+                    type: string
+                dhaakadRating:
+                  type: string
+                  example: 'Rocket'
+                price:
+                  type: number
+                  example: 149
+                offerPrice:
+                  type: number
+                  example: 99
+                description:
+                  type: string
+                  example: 'Sample description about movie'
+                subDescription:
+                  type: string
+                  example: 'Sub description'
+                toolTip:
+                  type: string
+                  example: 'Dhaakad rating 5'
+                isFeatured:
+                  type: boolean
+                  example: false
+                isTrend:
+                  type: boolean
+                  example: true
+                movieUrl:
+                  type: array
+                  items:
+                    type: string
+                  example: ['https://some url']
+                trailerUrl:
+                  type: array
+                  items:
+                    type: string
+                  example: ['https://trailerurl']
+                totalReviewsCount:
+                  type: number
+                  example: 23
+                releaseDate:
+                  type: string
+                  format: date-time
+                  example: '2023-07-30T16:10:10Z'
+                expireDate:
+                  type: string
+                  format: date-time
+                  example: '2023-07-30T16:10:10Z'
+                status:
+                  type: string
+                  example: 'Active'
+                averageRating:
+                  type: number
+                  example: 3.9
+                streamed:
+                  type: boolean
+                  example: false
+      responses:
+        201:
+          description: account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie created successfully!"
+                  data:
+                    type: object
+                    properties:
+                      movie:
+                        $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /movies/{id}:
+    get:
+      tags:
+        - movies
+      summary: Get Movie by id
+      operationId: getMovieById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched successfully"
+                  data:
+                    $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - movies
+      summary: 'Update movie'
+      operationId: 'updateMovie'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                languages:
+                  type: array
+                  items:
+                    type: string
+                  example: ['English','Hindi']
+                categories:
+                  type: array
+                  items:
+                    type: string
+                  example: ['Action','Drama']
+                castIds:
+                  type: array
+                  items:
+                    type: string
+                casts:
+                  type: array
+                  items:
+                    type: string
+                  example: ['Akshay  Kumar','Alic Peter']
+                ageGroup:
+                  type: array
+                  items:
+                    type: string
+                    example: ['G']
+                title:
+                  type: string
+                  example: 'Big Buck Bunny'
+                brandTitle:
+                  type: string
+                  example: 'Dhaakad cinema orignal'
+                duration:
+                  type: string
+                  example: '01:25:40'
+                subtitles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      'type':
+                        type: string
+                        example: 'english'
+                      url:
+                        type: string
+                        example: 'https://path to url'
+                movieSubtitles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      language:
+                        type: string
+                        example: 'English'
+                      subtitle:
+                        type: string
+                        example: 'NA'
+                subtitlesLan:
+                  type: array
+                  items:
+                    type: string
+                  example: ['NA']
+                banners:
+                  type: array
+                  items:
+                    type: string
+                dhaakadRating:
+                  type: string
+                  example: 'Rocket'
+                price:
+                  type: number
+                  example: 149
+                offerPrice:
+                  type: number
+                  example: 99
+                description:
+                  type: string
+                  example: 'Sample description about movie'
+                subDescription:
+                  type: string
+                  example: 'Sub description'
+                toolTip:
+                  type: string
+                  example: 'Dhaakad rating 5'
+                isFeatured:
+                  type: boolean
+                  example: false
+                isTrend:
+                  type: boolean
+                  example: true
+                movieUrl:
+                  type: array
+                  items:
+                    type: string
+                  example: ['https://some url']
+                trailerUrl:
+                  type: array
+                  items:
+                    type: string
+                  example: ['https://trailerurl']
+                totalReviewsCount:
+                  type: number
+                  example: 23
+                releaseDate:
+                  type: string
+                  format: date-time
+                  example: '2023-07-30T16:10:10Z'
+                expireDate:
+                  type: string
+                  format: date-time
+                  example: '2023-07-30T16:10:10Z'
+                status:
+                  type: string
+                  example: 'Active'
+                averageRating:
+                  type: number
+                  example: 3.9
+                streamed:
+                  type: boolean
+                  example: false
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Movies'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - movies
+      summary: 'Delete movie'
+      operationId: 'deleteMovie'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  data:
+                    type: string
+                    example: null
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+  /movies/upload/{id}:
+    post:
+      tags:
+        - movies
+      summary: Upload URL
+      operationId: uploadUrl
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asdasd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: 'sas token created successfully'
+                  data:
+                    type: object
+                    properties:
+                      sasToken:
+                        type: string
+                        example: 'sdfuihjnsjahd'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+
+  /users/signup:
+    post:
+      tags:
+        - users
+      summary: register user
+      description: register user
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  example: 'Sandy'
+                email:
+                  type: string
+                  example: 'sandy@gmail.com'
+                password:
+                  type: string
+                  example: abcd
+                passwordConfirm:
+                  type: string
+                  example: abcd
+                userType:
+                  type: string
+                  example: 'admin||user'
+      responses:
+        201:
+          description: account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user account created successfully"
+                  token:
+                    type: string
+                    example: 'asdaSJKASNDKJNJKQNWKJEQOIE8QE92EQWJKMMMMMMMMMMMMMMMMMADN'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/signup/firebase:
+    post:
+      tags:
+        - users
+      summary: register in firebase
+      description: register in firebase
+      operationId: firebaseRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile:
+                  type: string
+                  example: '+91-1234567890'
+                firebaseToken:
+                  type: string
+                  example: 'agsdbjnklajjjjjjjjjjjjjjjjjj8732'
+                userType:
+                  type: string
+                  example: 'admin||user'
+                firebaseUID:
+                  type: string
+                  example: 'asdad32e'
+      responses:
+        201:
+          description: successfull
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user Logged in successfully || admin||user created successfully"
+                  token:
+                    type: string
+                    example: 'asdaSJKASNDKJNJKQNWKJEQOIE8QE92EQWJKMMMMMMMMMMMMMMMMMADN'
+                  id:
+                    type: string
+                    example: 'abc123'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: login
+      description: login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'sandy@gmail.com'
+                password:
+                  type: string
+                  example: 'abcd'
+                userType:
+                  type: string
+                  example: 'admin||user'
+      responses:
+        200:
+          description: account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 'abc123'
+                  status:
+                    type: string
+                    example: "success"
+                  token:
+                    type: string
+                    example: 'asdaSJKASNDKJNJKQNWKJEQOIE8QE92EQWJKMMMMMMMMMMMMMMMMMADN'
+                  message:
+                    type: string
+                    example: "admin||user login successfully"
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/logout:
+    get:
+      tags:
+        - users
+      summary: logout user
+      operationId: logout
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+  /users/forgotPassword:
+    post:
+      tags:
+        - users
+      summary: login with firebase
+      description: login with firebase
+      operationId: loginWithFirebase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'sandy@gmail.com'
+      responses:
+        200:
+          description: account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "OTP sent to email"
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/resetPassword/{id}:
+    patch:
+      tags:
+        - users
+      summary: reset password
+      operationId: resetPassword
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: 'abcd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Password changed successfully!"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/expireCoupon/{id}:
+    patch:
+      tags:
+        - users
+      summary: expire coupon
+      operationId: expireCoupon
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coupons:
+                  type: array
+                  items:
+                    type: string
+                  example: ['abc', 'xyz']
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/expireReward/{id}:
+    patch:
+      tags:
+        - users
+      summary: expire reward
+      operationId: expireReward
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/getUserByRefCode/{id}:
+    get:
+      tags:
+        - users
+      summary: get User By Reference Code
+      operationId: getUserByRefCode
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "User fetched successfully"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/addReward/{id}:
+    patch:
+      tags:
+        - users
+      summary: add reward
+      operationId: addReward
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Reward purchased successfully"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/verifyOTP:
+    patch:
+      tags:
+        - users
+      summary: verify OTP
+      operationId: verifyOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'sandy@gmail.com'
+                otp:
+                  type: integer
+                  example: 123456
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 'abc123'
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "OTP verified successfully"
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/resendOTP:
+    post:
+      tags:
+        - users
+      summary: resend OTP
+      operationId: resendOTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'sandy@gmail.com'
+      responses:
+        200:
+          description: OTP sent to email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "OTP sent to email!"
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users:
+    get:
+      tags:
+        - users
+      summary: get all Users
+      operationId: getAllUsers
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Users fetched successfully"
+                  results:
+                    type: integer
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - users
+      summary: add user
+      description: add user
+      operationId: addUser
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/User'
+                - type: object
+                  properties:
+                    photo:
+                      type: string
+                      format: binary
+      responses:
+        201:
+          description: account created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user created successfully"
+                  token:
+                    type: string
+                    example: 'asdaSJKASNDKJNJKQNWKJEQOIE8QE92EQWJKMMMMMMMMMMMMMMMMMADN'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/recent-users:
+    get:
+      tags:
+        - users
+      summary: Get recently added users
+      operationId: getRecentUsers
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Users fetched successfully"
+                  results:
+                    type: integer
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Get user by id
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user fetched successfully"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - users
+      summary: update user
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/User'
+                - type: object
+                  properties:
+                    photo:
+                      type: string
+                      format: binary
+      responses:
+        200:
+          description: user updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "admin||user updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - users
+      summary: delete user
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: user updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Users deleted successfully"
+                  data:
+                    type: string
+                    example: null
+
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/token/public:
+    get:
+      tags:
+        - users
+      summary: get public token in cookie
+      operationId: getPublicTokenCookie
+      responses:
+        '200':
+          description: >
+            Contains the session cookie named `public`.
+            Pass this cookie back in subsequent requests.
+  
+
+  /reviews:
+    get:
+      tags:
+        - reviews
+      summary: get all reviews
+      operationId: getAllReviews
+      responses:
+        200:
+          description: fetch successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "fetch successfully"
+                  results:
+                    type: integer
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Review'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - reviews
+      summary: add review
+      operationId: addReview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                review:
+                  type: string
+                  example: 'Good Movie'
+                description:
+                  type: string
+                  example: 'Good Movie'
+                rating:
+                  type: integer
+                  example: 1||2||3||4||5
+                movieId:
+                  type: string
+                  example: 'asdasd'
+                user:
+                  type: string
+                  example: 'abc123'
+      responses:
+        201:
+          description: created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "created successfully"
+                  data:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Review'
+      security:
+        - bearerAuth: [ ]
+  /reviews/{id}:
+    get:
+      tags:
+        - reviews
+      summary: Get review by Id
+      operationId: getReviewById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'xyz123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "fetch successfully"
+                  data:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Review'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - reviews
+      summary: Update review by Id
+      operationId: updateReviewById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'xyz123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                review:
+                  type: string
+                  example: 'Good Movie'
+                description:
+                  type: string
+                  example: 'Good Movie'
+                rating:
+                  type: integer
+                  example: 1||2||3||4||5
+                movieId:
+                  type: string
+                  example: 'asdasd'
+                user:
+                  type: string
+                  example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Review'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - reviews
+      summary: Delete review by Id
+      operationId: deleteReviewById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'xyz123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "deleted Successfully"
+                  data:
+                    type: string
+                    example: null
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+  /reviews/updatestatus:
+    post:
+      tags:
+        - reviews
+      summary: Update Status
+      operationId: updateStatus
+      parameters:
+        - name: reviewId
+          in: query
+          required: true
+          schema:
+            type: string
+            example: xyz123
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                  example: 'abc123'
+                review:
+                  type: string
+                  example: 'Good Movie'
+                description:
+                  type: string
+                  example: 'Good Movie'
+                rating:
+                  type: integer
+                  example: 1||2||3||4||5
+                movieId:
+                  type: string
+                  example: 'asdasd'
+                isApproved:
+                  type: boolean
+                  example: true
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/Review'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+
+  /categories/:
+    get:
+      tags:
+        - categories
+      summary: get categories
+      operationId: getCategories
+      responses:
+        201:
+          description: category fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "All categories fetch successfully"
+                  result:
+                    type: number
+                    example: 3
+                  data:
+                    type: object
+                    properties:
+                      category:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Category'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - categories
+      summary: Create new Category
+      operationId: createCategory
+      requestBody:
+        description: create cast object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        201:
+          description: category created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "category created successfully"
+                  data:
+                    type: object
+                    properties:
+                      category:
+                        $ref: '#/components/schemas/Category'
+      security:
+        - bearerAuth: [ ]
+  /categories/{id}:
+    get:
+      tags:
+        - categories
+      summary: get category by id
+      operationId: getCategoryById
+      parameters:
+        - name: id
+          in: path
+          description: id of the cateogry
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "get category successfully"
+                  data:
+                    type: object
+                    properties:
+                      category:
+                        $ref: '#/components/schemas/Category'
+      security:
+        - bearerAuth: [ ]
+    patch:
+      tags:
+        - categories
+      summary: update category
+      operationId: updateCategory
+      parameters:
+        - name: id
+          in: path
+          description: id of the category
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "category updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      category:
+                        $ref: '#/components/schemas/Category'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - categories
+      summary: delete category
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: path
+          description: id of the category
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "category deleted successfully"
+                  data:
+                    type: object
+                    properties:
+                      cast:
+                        $ref: '#/components/schemas/Category'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'error'
+                  message:
+                    type: string
+                    example: 'No category found with that ID'
+
+      security:
+        - bearerAuth: [ ]
+
+  /languages:
+    get:
+      tags:
+        - languages
+      summary: get all languages
+      operationId: getAllLanguages
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "All languages fetch successfully"
+                  results:
+                    type: integer
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      language:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Language'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - languages
+      summary: Add language
+      operationId: addLanguage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 'English'
+                status:
+                  type: string
+                  example: 'Active||Inactive'
+      responses:
+        201:
+          description: Language created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Language created successfully"
+                  data:
+                    type: object
+                    properties:
+                      language:
+                        $ref: '#/components/schemas/Language'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /languages/{id}:
+    get:
+      tags:
+        - languages
+      summary: get language by id
+      operationId: getLanguageById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asd456'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "fetch language successfully"
+                  data:
+                    $ref: '#/components/schemas/Language'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - languages
+      summary: update language by id
+      operationId: updateLanguageById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asd456'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 'English'
+                status:
+                  type: string
+                  example: 'Active||Inactive'
+      responses:
+        200:
+          description: Language updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Language updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Language'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - languages
+      summary: delete language by id
+      operationId: deleteLanguageById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'asd456'
+      responses:
+        200:
+          description: Language deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Language deleted successfully"
+                  data:
+                    type: string
+                    example: null
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /rewards:
+    get:
+      tags:
+        - rewards
+      summary: Get all rewards
+      operationId: getAllRewards
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Rewards fetched successfully"
+                  results:
+                    type: integer
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      reward:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Reward'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - rewards
+      summary: Add reward
+      operationId: addReward
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 'New Subscription'
+                subtitle:
+                  type: string
+                  example: 'English'
+                couponCode:
+                  type: string
+                  example: 'asd'
+                amount:
+                  type: integer
+                  example: 100
+                description:
+                  type: string
+                  example: 'asdasd'
+                expireDate:
+                  type: string
+                  format: date
+                  example: '2024-08-12'
+                userLimit:
+                  type: string
+                  example: 4
+                status:
+                  type: string
+                  example: 'Active||Inactive'
+                movieId:
+                  type: string
+                  example: 'asdasd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Rewards created successfully"
+                  data:
+                    type: object
+                    properties:
+                      reward:
+                        $ref: '#/components/schemas/Reward'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /rewards/{id}:
+    get:
+      tags:
+        - rewards
+      summary: Get reward by Id
+      operationId: getRewardById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'pqr123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Reward fetched successfully"
+                  data:
+                    $ref: '#/components/schemas/Reward'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - rewards
+      summary: Update reward by Id
+      operationId: updateRewardById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'pqr123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 'New Subscription'
+                subtitle:
+                  type: string
+                  example: 'English'
+                couponCode:
+                  type: string
+                  example: 'asd'
+                amount:
+                  type: integer
+                  example: 100
+                description:
+                  type: string
+                  example: 'asdasd'
+                expireDate:
+                  type: string
+                  format: date
+                  example: '2024-08-12'
+                userLimit:
+                  type: string
+                  example: 4
+                status:
+                  type: string
+                  example: 'Active||Inactive'
+                movieId:
+                  type: string
+                  example: 'asdasd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Reward updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Reward'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - rewards
+      summary: Delete reward by Id
+      operationId: deleteRewardById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'pqr123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Reward deleted successfully"
+                  data:
+                    type: string
+                    example: null
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+
+  /casts:
+    get:
+      tags:
+        - casts
+      summary: get list of casts details
+      operationId: getListOfCasts
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "casts get successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      cast:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Casts'
+    post:
+      tags:
+        - casts
+      summary: create Cast
+      operationId: createCast
+      requestBody:
+        description: upload casts object
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Casts'
+                - type: object
+                  properties:
+                    photo:
+                      type: string
+                      format: 'file upload'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "casts get successfully"
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      cast:
+                        $ref: '#/components/schemas/Casts'
+      security:
+        - bearerAuth: []
+  /casts/{id}:
+    get:
+      tags:
+        - casts
+      summary: get cast by id
+      operationId: getCastsById
+      parameters:
+        - name: id
+          in: path
+          description: id of the casts
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "casts fetch successfully"
+                  data:
+                    type: object
+                    properties:
+                      cast:
+                        $ref: '#/components/schemas/Casts'
+    patch:
+      tags:
+        - casts
+      summary: update casts
+      operationId: updateCasts
+      parameters:
+        - name: id
+          in: path
+          description: id of the casts
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "casts updated successfully"
+                  data:
+                    type: object
+                    properties:
+                      cast:
+                        $ref: '#/components/schemas/Casts'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - casts
+      summary: Delete cast by Id
+      operationId: deleteCastById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "cast deleted successfully"
+                  data:
+                    type: string
+                    example: null
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+
+  /usermovies:
+    get:
+      tags:
+        - usermovies
+      summary: 'Get all user movies'
+      operationId: 'getAllUserMovies'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  results:
+                    type: integer
+                    example: 10
+                  message:
+                    type: string
+                    example: "Movies Fetch successfully"
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserMovie'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+  /usermovies/{userid}:
+    get:
+      tags:
+        - usermovies
+      summary: 'Get movies by user id'
+      operationId: 'getMoviesByUserId'
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie fetched Successfully"
+                  results:
+                    type: integer
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserMovie'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - usermovies
+      summary: Add User Movie
+      operationId: addUserMovie
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'asd'
+                email:
+                  type: string
+                  example: 'as@as.com'
+                productionHouse:
+                  type: string
+                  example: 'xcxcwe'
+                language:
+                  type: string
+                  example: 'Hindi'
+                trailerVideo:
+                  type: string
+                  example: 'aasdad'
+                movieVideo:
+                  type: string
+                  example: 'weer'
+                trailerPass:
+                  type: string
+                  example: 'tyuio'
+                moviePass:
+                  type: string
+                  example: 'pouyg'
+                movieDescription:
+                  type: 'string'
+                  example: 'gvbkad'
+                userId:
+                  type: string
+                  example: 'asdasd'
+                status:
+                  type: string
+                  example: 'Active||Inactive'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Movie created Successfully"
+                  status:
+                    type: string
+                    example: "success"
+                  data:
+                    $ref: '#/components/schemas/UserMovie'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+  /usermovies/{id}:
+    patch:
+      tags:
+        - usermovies
+      summary: Update User movie
+      operationId: updateUserMovie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'asd'
+                email:
+                  type: string
+                  example: 'as@as.com'
+                productionHouse:
+                  type: string
+                  example: 'xcxcwe'
+                language:
+                  type: string
+                  example: 'Hindi'
+                trailerVideo:
+                  type: string
+                  example: 'aasdad'
+                movieVideo:
+                  type: string
+                  example: 'weer'
+                trailerPass:
+                  type: string
+                  example: 'tyuio'
+                moviePass:
+                  type: string
+                  example: 'pouyg'
+                movieDescription:
+                  type: 'string'
+                  example: 'gvbkad'
+                userId:
+                  type: string
+                  example: 'asdasd'
+                status:
+                  type: string
+                  example: 'Active||Inactive'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie updated Successfully"
+                  data:
+                    type: object
+                    properties:
+                      movies:
+                        $ref: '#/components/schemas/UserMovie'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - usermovies
+      summary: Delet User movie
+      operationId: deletUserMovie
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'abc123'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Movie deleted successfully"
+                  data:
+                    type: string
+                    example: null
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: [ ]
+
+  /notifications/:
+    get:
+      tags:
+        - notifications
+      operationId: getAllNotifications
+      summary: Get all notifications
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'Notification fetched successfully'
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      notification:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Notification'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - notifications
+      operationId: createNotification
+      summary: To create a notification
+      requestBody:
+        description: notification body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'created successfully!!'
+                  data:
+                    type: object
+                    properties:
+                      notification:
+                        $ref: '#/components/schemas/Notification'
+      security:
+        - bearerAuth: [ ]
+
+  /trasncations/createOrder:
+    post:
+      tags:
+        - transactions
+      summary: To create movie purchase order
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - movieId
+                - amount
+                - currency
+                - receipt
+              properties:
+                userId:
+                  type: string
+                  example: 'askjdn123'
+                movieId:
+                  type: string
+                  example: 'askjdn1233'
+                amount:
+                  type: number
+                  example: 3654
+                currency:
+                  type: string
+                  example: 'INR'
+                receipt:
+                  type: string
+                  example: '123123asd'
+                notes:
+                  type: object
+                streamed:
+                  type: boolean
+                  default: false
+                  example: false
+      responses:
+        200:
+          description: order created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Order Created Succcessfully!"
+                  results:
+                    type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/RazorpayOrder'
+  /trasncations/verifyOrderAndBookMovie:
+    post:
+      tags:
+        - transactions
+      summary: Verify order and book movies
+      operationId: verifyOrderAndBookMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - order_id
+                - payment_id
+                - movie_booking_type
+              properties:
+                order_id:
+                  type: string
+                  example: 'askjdn123'
+                payment_id:
+                  type: string
+                  example: 'askjdn1233'
+                movie_booking_type:
+                  type: string
+                  example: 'Test'
+                razorpay_signature:
+                  type: string
+                  example: 'kjasndkajsndsjkand'
+      responses:
+        200:
+          description: order verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Payment has been verified and movie has verified"
+                  results:
+                    type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/MovieTransactions'
+        500:
+          description: verification failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: Payment verification failed
+                  results:
+                    type: string
+                    example: null
+  /trasncations/getAllOrder:
+    get:
+      tags:
+        - transactions
+      operationId: getAllOrder
+      summary: To get all orders
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'Order fetched successfully!!'
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      order:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MovieTransactions'
+  /trasncations/getAllRentedMovies/{id}:
+    get:
+      tags:
+        - transactions
+      operationId: getAllRentedMoviesById
+      summary: To get all rented movies by id
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'askjdn234'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'Order fetched successfully!!'
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      order:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MovieTransactions'
+  /trasncations/getAllStreanedMovies/{id}:
+    get:
+      tags:
+        - transactions
+      operationId: getAllStreamedMoviesById
+      summary: To get all streamed movies by id
+      parameters:
+        - name: id
+          in: path
+          description: user id
+          required: true
+          schema:
+            type: string
+            example: 'askjdn234'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'Order fetched successfully!!'
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      order:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/MovieTransactions'
+  /trasncations/{id}:
+    patch:
+      tags:
+        - transactions
+      summary: to update a order transaction
+      operationId: updateMovieTransaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: order id
+          schema:
+            type: string
+            example: 'kjnds13'
+      requestBody:
+        description: Movie transaction update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieTransactions'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Stream started!"
+                  data:
+                    type: object
+                    properties:
+                      orders:
+                        $ref: '#/components/schemas/MovieTransactions'
+
+  /suport:
+    post:
+      tags:
+        - support
+      summary: Add support
+      operationId: addSupport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 'Support'
+                description:
+                  type: string
+                  example: 'Support'
+                email:
+                  type: string
+                  example: 'abc@as.com'
+      responses:
+        201:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "created successfully!"
+                  data:
+                    type: object
+                    properties:
+                      suport:
+                        $ref: '#/components/schemas/Support'
+    get:
+      tags:
+        - support
+      summary: Get support
+      operationId: getSupport
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Notification fetched successfully"
+                  results:
+                    type: string
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      suport:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Support'
+  /suport/{id}:
+    get:
+      tags:
+        - support
+      summary: Get support By Id
+      operationId: getSupportById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: 'sdfsf'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "support fetched successfully"
+                  data:
+                    $ref: '#/components/schemas/Support'
+
+  /purchase/:
+    get:
+      tags:
+        - purchase
+      operationId: getAllPurchase
+      summary: Get all purchase
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'PurchaseMovie fetched successfully'
+                  results:
+                    type: number
+                    example: 10
+                  data:
+                    type: object
+                    properties:
+                      purchase:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Purchase'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - purchase
+      operationId: createPurchase
+      summary: To create a purchase
+      requestBody:
+        description: purchase body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Purchase'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'success'
+                  message:
+                    type: string
+                    example: 'created successfully!!'
+                  data:
+                    type: object
+                    properties:
+                      purchase:
+                        $ref: '#/components/schemas/Purchase'
+      security:
+        - bearerAuth: [ ]
+
+  /current-user-movie:
+    post:
+      tags:
+        - current-user-movie
+      summary: To create the details of current movie the user is watching
+      description: Current used to store the movie time the user is watching
+      operationId: createCurrentUserMovie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrentUserMovie'
+      responses:
+        200:
+          description: successfully created user movie details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Current time save successfully"
+                  data:
+                    $ref: '#/components/schemas/CurrentUserMovie'
+      security:
+        - bearerAuth: [ ]
+  /current-user-movie/{id}:
+    get:
+      tags:
+        - current-user-movie
+      summary: To get the user current movie
+      description: Pass the movie id and get current user movie
+      operationId: getCurrentUserMovieById
+      parameters:
+        - name: id
+          in: path
+          description: movie_id of the current user movie
+          required: true
+          schema:
+            type: string
+            example: 'aajsndjkansd'
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Current time get successfully"
+                  data:
+                    type: object
+                    properties:
+                      current_time:
+                        type: number
+                        example: 120
+        400:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'error'
+                  message:
+                    type: string
+                    example: 'No movie id'
+      security:
+        - bearerAuth: [ ]
+
+
+
+components:
+  schemas:
+    Movies:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'asdasd'
+        title:
+          type: string
+          example: 'Big Buck Bunny'
+        brandTitle:
+          type: string
+          example: 'Dhaakad cinema orignal'
+        duration:
+          type: string
+          example: '01:25:40'
+        categories:
+          type: array
+          items:
+            type: string
+          example: ['Action','Drama']
+        subtitles:
+          type: array
+          items:
+            type: object
+            properties:
+              'type':
+                type: string
+                example: 'english'
+              url:
+                type: string
+                example: 'https://path to url'
+        movieSubtitles:
+          type: array
+          items:
+            type: object
+            properties:
+              language:
+                type: string
+                example: 'English'
+              subtitle:
+                type: string
+                example: 'NA'
+        subtitlesLan:
+          type: array
+          items:
+            type: string
+          example: ['NA']
+        banners:
+          type: array
+          items:
+            type: string
+        languages:
+          type: array
+          items:
+            type: string
+          example: ['English','Hindi']
+        dhaakadRating:
+          type: string
+          example: 'Rocket'
+        ageGroup:
+          type: array
+          items:
+            type: string
+          example: ['G']
+        casts:
+          type: array
+          items:
+            type: string
+          example: ['Akshay  Kumar','Alic Peter']
+        price:
+          type: number
+          example: 149
+        offerPrice:
+          type: number
+          example: 99
+        description:
+          type: string
+          example: 'Sample description about movie'
+        subDescription:
+          type: string
+          example: 'Sub description'
+        toolTip:
+          type: string
+          example: 'Dhaakad rating 5'
+        isFeatured:
+          type: boolean
+          example: false
+        isTrend:
+          type: boolean
+          example: true
+        movieUrl:
+          type: array
+          items:
+            type: string
+          example: ['https://some url']
+        trailerUrl:
+          type: array
+          items:
+            type: string
+          example: ['https://trailerurl']
+        totalReviewsCount:
+          type: number
+          example: 23
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        expireDate:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        status:
+          type: string
+          example: 'Active'
+        castIds:
+          type: array
+          items:
+            type: string
+        averageRating:
+          type: number
+          example: 3.9
+        streamed:
+          type: boolean
+          example: false
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'asdasd'
+        firstName:
+          type: string
+          example: 'Sandy'
+        lastName:
+          type: string
+          example: 'Joseph'
+        userName:
+          type: string
+          example: 'Sandy'
+        email:
+          type: string
+          example: 'sandy@gmail.com'
+        referralCode:
+          type: string
+          example: 'test'
+        idReferralCode:
+          type: boolean
+          example: true
+        rewards:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                example: 'Referral Reward'
+              amount:
+                type: number
+                example: 10
+        coupons:
+          type: array
+          items:
+            type: string
+          example: ['abc','xyz']
+        otp:
+          type: number
+          example: '123456'
+        expiryotp:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        password:
+          type: string
+          example: 'abcd'
+        passwordConfirm:
+          type: string
+          example: 'abcd'
+        mobile:
+          type: 'string'
+          example: '+91-1234567891'
+        gender:
+          type: string
+          example: 'male||female'
+        dateOfBirth:
+          type: string
+          format: date
+          example: '1991-07-30'
+        city:
+          type: string
+          example: 'Delhi'
+        releasedBookedMovies:
+          type: array
+          items:
+            type: string
+          example: []
+        preBookedMovies:
+          type: array
+          items:
+            type: string
+          example: []
+        country:
+          type: string
+          example: 'India'
+        zipCode:
+          type: string
+          example: '123456'
+        state:
+          type: string
+          example: 'Delhi'
+        status:
+          type: string
+          example: 'Active||Inactive'
+        photo:
+          type: string
+          example: 'https://123.png'
+        address:
+          type: string
+          example: '#123 5th cross Delhi'
+        userType:
+          type: string
+          example: 'admin||user'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        firebaseId:
+          type: string
+          example: 'asdasd'
+        passwordChangedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        passwordResetToken:
+          type: string
+          example: 'sadhq7ygwiueqwhe2t6783qeidasnsbhgdas'
+        passwordResetExpires:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    Review:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'xyz123'
+        review:
+          type: string
+          example: 'Good Movie'
+        description:
+          type: string
+          example: 'Good Movie'
+        rating:
+          type: integer
+          example: 1||2||3||4||5
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        movieId:
+          type: string
+          example: 'asdasd'
+        user:
+          type: string
+          example: 'abc123'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        isApproved:
+          type: boolean
+          example: false
+    Category:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'asdasd'
+        title:
+          type: string
+          uniqueItems: true
+          example: 'Action'
+        status:
+          type: string
+          example: 'Active'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    Language:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'asd456'
+        title:
+          type: string
+          example: English
+        status:
+          type: string
+          example: 'Active||Inactive'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    Reward:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'pqr123'
+        title:
+          type: string
+          example: 'New Subscription'
+        subtitle:
+          type: string
+          example: 'English'
+        couponCode:
+          type: string
+          example: 'asd'
+        amount:
+          type: integer
+          example: 100
+        description:
+          type: string
+          example: 'asdasd'
+        expireDate:
+          type: string
+          format: date
+          example: '2024-08-12'
+        userLimit:
+          type: string
+          example: 4
+        status:
+          type: string
+          example: 'Active||Inactive'
+        movieId:
+          type: string
+          example: 'asdasd'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    Casts:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'asdasd'
+        firstName:
+          type: string
+          example: 'Jhonny'
+        lastName:
+          type: string
+          example: 'Deep'
+        photo:
+          type: string
+          example: 'https://photo-url.com'
+        description:
+          type: string
+          example: 'Singh is bling'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    UserMovie:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'sdfsf'
+        name:
+          type: string
+          example: 'asd'
+        email:
+          type: string
+          example: 'as@as.com'
+        productionHouse:
+          type: string
+          example: 'xcxcwe'
+        language:
+          type: string
+          example: 'Hindi'
+        trailerVideo:
+          type: string
+          example: 'aasdad'
+        movieVideo:
+          type: string
+          example: 'weer'
+        trailerPass:
+          type: string
+          example: 'tyuio'
+        moviePass:
+          type: string
+          example: 'pouyg'
+        movieDescription:
+          type: 'string'
+          example: 'gvbkad'
+        userId:
+          type: string
+          example: 'asdasd'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        status:
+          type: string
+          example: 'Active||Inactive'
+    Notification:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'sdfsf'
+        title:
+          type: string
+          example: 'Test notification'
+        description:
+          type: string
+          example: 'Test notification description'
+        isViewed:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    MovieTransactions:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: 'ForeignKey'
+          example: '123asd'
+        movieId:
+          type: string
+          format: 'ForeignKey'
+          example: 'asd1234'
+        amount:
+          type: string
+          example: '12345'
+        currency:
+          type: string
+          example: 'INR'
+        receipt:
+          type: number
+          example: 1231245
+        streamed:
+          type: boolean
+          default: false
+          example: false
+        startedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30'
+        expired:
+          type: boolean
+          default: false
+          example: false
+        notes:
+          type: object
+        order_id:
+          type: string
+          example: '12dwsae123'
+        payment_id:
+          type: string
+          example: '1234asd3'
+        movie_booking_type:
+          type: string
+          example: 'Test'
+        status:
+          type: string
+          default: 'Pending'
+          example: 'Pending'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    Support:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: 'hash'
+          example: 'sdfsf'
+        title:
+          type: string
+          example: 'Support'
+        description:
+          type: string
+          example: 'Support'
+        email:
+          type: string
+          example: 'abc@as.com'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    Purchase:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: 'kjandjk123123'
+        movieId:
+          type: string
+          example: 'askdq213123'
+        transitionId:
+          type: string
+          example: 'alskdmalskdm'
+        stream:
+          type: boolean
+          default: false
+          example: false
+        expiredAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2023-07-30T16:10:10Z'
+    CurrentUserMovie:
+      type: object
+      required:
+        - movieId
+        - userId
+        - currentTime
+      properties:
+        movieId:
+          type: string
+          example: 'askdjn1223'
+        userId:
+          type: string
+          example: 'asdqwe23'
+        currentTime:
+          type: number
+          description: currentTimeInSeconds
+          example: 30
+    RazorpayOrder:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'ksjdn234'
+        entity:
+          type: string
+          example: 'Sample'
+        amount_paid:
+          type: number
+          example: 235
+        amount_due:
+          type: number
+          example: 256
+        status:
+          type: string
+          enum:
+            - created
+            - attempted
+            - paid
+        attempts:
+          type: number
+          example: 2
+        created_at:
+          type: number
+          example: 12783123
+        description:
+          type: string
+          example: 'Test description'
+        payments:
+          type: object
+        offers:
+          type: object
+        transfers:
+          type: object
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: 'Something went wrong'
+
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes

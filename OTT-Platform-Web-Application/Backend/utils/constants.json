@@ -1,0 +1,9 @@
+{
+  "BucketName": "dhaakadmovies",
+  "Bucket_s3_Path": "https://dhaakadmovies.s3.us-east-2.amazonaws.com/",
+  "Bucket_s3_Path_s3": "s3://dhaakadmovies/",
+  "MediaConverter_Role_ARN": "arn:aws:iam::232321253042:user/Rohit",
+  "MediaConverter_EndPoint": "https://wa11sy9gb.mediaconvert.us-east-2.amazonaws.com",
+  "Bucket_MovieFolder": "movies",
+  "Bucket_TrailerFolder": "trailerURL"
+}

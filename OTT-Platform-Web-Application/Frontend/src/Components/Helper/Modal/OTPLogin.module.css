@@ -1,0 +1,256 @@
+.selectCountryIcon {
+    height: 40px;
+    width: 40px;
+}
+
+.selectDropDownIcon {
+    height: 20px;
+    width: 20px;
+}
+
+.dropDownCountryOutline {
+    border: 1px solid #FFCC00;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+.selectCountryIconSeparator {
+    border-right: 0.7px solid #68686880;
+    height: 31px;
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.selectCountryIconBtn {
+    height: 44px;
+    width: 82px;
+}
+
+.mobileInputBox {
+    width: 440px;
+    height: 50px;
+    padding: 6px 218px 6px 5px;
+    border-radius: 30px;
+    border: 1px solid #FFCC00;
+    display: flex;
+    align-items: center;
+    margin-left: 1%;
+    margin-bottom: 20px;
+}
+
+.inputBoxError{
+    border: 1px solid #FD180C;
+}
+
+.countryCodePlaceholder {
+    margin-right: 20px;
+    background-color: #EAEAEA;
+    padding: 4%;
+    text-align: center;
+    border-radius: 50%;
+}
+.mobileInput{
+    min-width: 360px;
+}
+
+.numberInput {
+    border: 0;
+    outline: 0;
+}
+
+.numberInput:focus {
+    outline: none !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.numberInput[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+.otpBtn {
+    font-family: Quicksand, serif !important;
+    width: 166px !important;
+    height: 50px !important;
+    border-radius: 30px !important;
+    background-color: #0D6EFD !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    margin-left: 20px !important;
+}
+
+.otpBtn:hover {
+    background-color: rgba(13, 110, 253, 0.71) !important;
+}
+
+.errorText {
+    font-family: Quicksand;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0em;
+    color: #FD180C;
+    margin-left: 5%;
+    margin-top: -20px;
+}
+
+.otpInputSection {
+    font-family: Quicksand;
+    color: #0D6EFD;
+}
+
+.OTPEnterText {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.OTPSentText {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+
+
+.otpInput {
+    border-bottom: 2px solid #0D6EFD;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-family: Quicksand;
+    color: #0D6EFD;
+}
+
+.otpInput:focus {
+    border-bottom: 2px solid #FFCC00;
+}
+
+.timeRemainingText {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.verifyOTPBtn {
+    width: 270px;
+    height: 36px;
+    border-radius: 20px !important;
+    background-color: #0D6EFD !important;
+    color: white !important;
+}
+
+.verifyOTPBtn:hover {
+    background-color: rgba(13, 110, 253, 0.6) !important;
+}
+
+.otpInputContainer {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.otpInputError {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FD180C;
+    margin-top: -10px;
+}
+
+.didntGetOTP {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: #5E5E5E
+}
+
+.resendOTP {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0.1em;
+    color: #0D6EFD;
+    cursor: pointer;
+}
+
+.resendOTP:hover {
+    color: rgba(13, 110, 253, 0.74);
+}
+
+.verifyTickContainer {
+    width: 140px;
+    height: 140px;
+    padding: 20px;
+    border-radius: 50%;
+    background-color: #0D6EFD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.verifyTickIcon {
+    width: 100px;
+    height: 100px;
+}
+
+.verifiedText {
+    font-family: Quicksand, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 20px;
+
+}
+
+.rightArrowIcon {
+    width: 18.3px;
+    height: 9.9px;
+    margin-left: 3px;
+}
+
+.getStartedBtn {
+    width: 150px;
+    height: 36px;
+    background-color: #FFCC00 !important;
+    color: #0D6EFD !important;
+    border-radius: 25px !important;
+}
+
+.getStartedBtn:hover{
+    background-color: rgba(255, 204, 0, 0.6) !important;
+}
+
+
+.captchaContainer{
+    margin-left: 13%;
+}
+.captchaResendContainer{
+}
+
+.disabledButton{
+    background-color: lightgray !important;
+}
